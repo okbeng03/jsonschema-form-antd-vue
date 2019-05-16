@@ -103,14 +103,8 @@ const List = {
     },
     renderFooter (h) {
       return (
-        <div class="j-list-footer">
-          <a-form-item
-            wrapperCol={{
-              span: 4,
-              offset: 20
-            }}
-          >
-            { this.size }
+        <a-row class="j-list-footer">
+          <a-col span="4" offset="20">
             <a-button
               type="dashed"
               style="width: 100%;"
@@ -118,8 +112,8 @@ const List = {
             >
               <a-icon type="plus" />添加
             </a-button>
-          </a-form-item>
-        </div>
+          </a-col>
+        </a-row>
       )
     },
     add () {
