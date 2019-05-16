@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { Form, Input, Button, Row, Col } from 'ant-design-vue'
+import { Form, Input, Button, Row, Col, Icon } from 'ant-design-vue'
 import JForm from './Form'
 import Fieldset from '../fieldset'
 import List from '../array'
@@ -12,6 +12,7 @@ Vue.use(Col)
 Vue.use(Form)
 Vue.use(Input)
 Vue.use(Button)
+Vue.use(Icon)
 Vue.use(Fieldset)
 Vue.use(List)
 Vue.use(Control)

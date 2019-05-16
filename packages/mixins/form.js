@@ -40,6 +40,9 @@ export default {
     formDefinition: {
       from: 'formDefinition',
       default: () => ({})
+    },
+    defaultValue: {
+      default: () => ({})
     }
     // model: { default: () => noop }
   },
@@ -66,6 +69,9 @@ export default {
     //     }
     //   })
     // }
+    getFieldDefaultValue (key) {
+      return _.get(this.defaultValue, key)
+    },
     getPath (key) {
       const { path } = this
       return key.map((item, idx) => {

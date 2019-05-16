@@ -1,5 +1,22 @@
 .j-list {
-  > .ant-row > div {
-    padding-right: 16px;
+  .j-list-item {
+    position: relative;
+
+    > .ant-row > div {
+      padding-right: 24px;
+    }
+
+    .btn-delete {
+      position: absolute;
+      right: 0;
+      top: 10px;
+      font-size: 20px;
+      color: #999;
+      cursor: pointer;
+
+      &:hover {
+        color: #333;
+      }
+    }
   }
 }

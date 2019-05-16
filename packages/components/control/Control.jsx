@@ -30,7 +30,15 @@ const Control = {
         </a-form-item>
       )
     } else {
-      return <component path={ name } { ...inputProps }></component>
+      if (definition.label) {
+        return (
+          <a-form-item label={ definition.label }>
+            <component path={ name } { ...inputProps }></component>
+          </a-form-item>
+        )
+      } else {
+        return <component path={ name } { ...inputProps }></component>
+      }
     }
   }
 }

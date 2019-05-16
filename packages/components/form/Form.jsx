@@ -1,4 +1,4 @@
-// import _ from 'lodash'
+import _ from 'lodash'
 import Generator from '../../core/schema'
 
 export default {
@@ -41,12 +41,12 @@ export default {
     },
     schema: Object,
     definition: Array,
-    value: [Object, Array]
+    defaultValue: [Object, Array]
   },
   data () {
     return {
       form: this.$form.createForm(this),
-      model: null,
+      // model: {},
       // fields: {},
       formDefinition: {
         definition: []
@@ -56,15 +56,16 @@ export default {
   provide () {
     return {
       form: this.form,
-      formDefinition: this.formDefinition
+      formDefinition: this.formDefinition,
+      defaultValue: this.defaultValue
       // model: this.value,
       // formFields: this.fields
     }
   },
-  model: {
-    prop: 'value',
-    event: 'change'
-  },
+  // model: {
+  //   prop: 'value',
+  //   event: 'change'
+  // },
   created () {
     const { schema, definition } = this
 
@@ -86,7 +87,7 @@ export default {
         decorator: [
           // 'name',
           {
-            initialValue: '王昌彬',
+            // initialValue: '王昌彬',
             rules: [{ required: true, message: 'Please input your name!' }]
           }
         ]
@@ -110,25 +111,26 @@ export default {
       {
         type: 'j-list',
         key: ['contacts'],
-        // columns: [
-        //   {
-        //     col: 8,
-        //     label: '姓名',
-        //     required: true
-        //   },
-        //   {
-        //     col: 8,
-        //     label: '联系方式',
-        //     required: true
-        //   },
-        //   {
-        //     col: 8,
-        //     label: '性别'
-        //   }
-        // ],
+        label: '通讯录',
+        columns: [
+          {
+            col: 8,
+            label: '姓名',
+            required: true
+          },
+          {
+            col: 8,
+            label: '联系方式',
+            required: true
+          },
+          {
+            col: 8,
+            label: '性别'
+          }
+        ],
         items: [
           {
-            type: 'j-fieldset',
+            type: 'j-inline',
             key: ['contacts', '0'],
             items: [
               {
@@ -166,7 +168,7 @@ export default {
                 key: ['contacts', '0', 'sex'],
                 col: 8,
                 group: {
-                  label: '',
+                  label: ''
                 },
                 decorator: [
                   // 'contacts.0.name',
@@ -191,6 +193,13 @@ export default {
     //   },
     // })
   },
+  mounted () {
+    const { defaultValue } = this
+
+    if (!_.isEmpty(defaultValue)) {
+      this.form.setFieldsValue(defaultValue)
+    }
+  },
   methods: {
     handleSubmit (e) {
       e.preventDefault()
@@ -208,11 +217,11 @@ export default {
 
     return (
       <a-form
-        form={form}
-        layout={layout}
-        prefixCls={prefixCls}
-        hideRequiredMark={hideRequiredMark}
-        onSubmit={handleSubmit}
+        form={ form }
+        layout={ layout }
+        prefixCls={ prefixCls }
+        hideRequiredMark={ hideRequiredMark }
+        onSubmit={ handleSubmit }
       >
         <j-fieldset>
         </j-fieldset>

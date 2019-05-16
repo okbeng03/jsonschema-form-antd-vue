@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <vue-form :form="form" :schema="schema"></vue-form>
+    <vue-form :form="form" :schema="schema" :default-value="model"></vue-form>
   </div>
 </template>
 
@@ -27,7 +27,14 @@ export default {
         required: ['name', 'phone']
       },
       model: {
-        name: '王昌彬'
+        name: '王昌彬',
+        contacts: [
+          {
+            name: '王瑶',
+            phone: '1233456771',
+            sex: '2'
+          }
+        ]
       }
     }
   }
