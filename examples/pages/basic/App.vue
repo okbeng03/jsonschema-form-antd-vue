@@ -22,9 +22,35 @@ export default {
             title: '手机',
             pattern: '^1[3578]\\d{9}$',
             description: '请输入正确的手机号码'
+          },
+          contacts: {
+            type: 'array',
+            title: '通讯录',
+            items: [
+              {
+                type: 'object',
+                properties: {
+                  name: {
+                    type: 'string',
+                    title: '姓名'
+                  },
+                  phone: {
+                    type: 'string',
+                    title: '手机',
+                    pattern: '^1[3578]\\d{9}$',
+                    description: '请输入正确的手机号码'
+                  },
+                  sex: {
+                    type: 'string',
+                    title: '性别',
+                    enums: ['1', '2']
+                  }
+                }
+              }
+            ]
           }
         },
-        required: ['name', 'phone']
+        required: ['name', 'phone', 'contacts']
       },
       model: {
         name: '王昌彬',

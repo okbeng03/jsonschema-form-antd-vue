@@ -1,5 +1,8 @@
 import _ from 'lodash'
 import Generator from '../../core/schema'
+import validator from '../../validate'
+import localize from '../../validate/localize'
+import { parseErrors, removeEmptyValue } from '../../util/util'
 
 export default {
   name: 'VueForm',
@@ -41,13 +44,17 @@ export default {
     },
     schema: Object,
     definition: Array,
-    defaultValue: [Object, Array]
+    defaultValue: [Object, Array],
+    ajv: {
+      type: Object,
+      default: () => {
+        return validator()
+      }
+    }
   },
   data () {
     return {
       form: this.$form.createForm(this),
-      // model: {},
-      // fields: {},
       formDefinition: {
         definition: []
       }
@@ -58,22 +65,13 @@ export default {
       form: this.form,
       formDefinition: this.formDefinition,
       defaultValue: this.defaultValue
-      // model: this.value,
-      // formFields: this.fields
     }
   },
-  // model: {
-  //   prop: 'value',
-  //   event: 'change'
-  // },
   created () {
-    const { schema, definition } = this
-
-    // if (!_.isEmpty(value)) {
-    //   this.model = value
-    // }
+    const { schema, definition, ajv } = this
 
     // form definition
+    this.validate = ajv.compile(schema)
     this.generator = new Generator()
     // this.formDefinition = this.generator.parse(schema, definition)
     this.formDefinition.definition = [
@@ -87,8 +85,12 @@ export default {
         decorator: [
           // 'name',
           {
-            // initialValue: '王昌彬',
-            rules: [{ required: true, message: 'Please input your name!' }]
+            rules: [
+              {
+                validator: this.handleFieldValidate
+              }
+            ],
+            validateTrigger: 'blur'
           }
         ]
       },
@@ -103,8 +105,16 @@ export default {
         },
         decorator: [
           // 'phone',
+          // {
+          //   rules: [{ required: true, message: 'Please input your phone!' }]
+          // }
           {
-            rules: [{ required: true, message: 'Please input your phone!' }]
+            rules: [
+              {
+                validator: this.handleFieldValidate
+              }
+            ],
+            validateTrigger: 'blur'
           }
         ]
       },
@@ -143,8 +153,16 @@ export default {
                 },
                 decorator: [
                   // 'contacts.0.name',
+                  // {
+                  //   rules: [{ required: true, message: 'Please input your name!' }]
+                  // }
                   {
-                    rules: [{ required: true, message: 'Please input your name!' }]
+                    rules: [
+                      {
+                        validator: this.handleFieldValidate
+                      }
+                    ],
+                    validateTrigger: 'blur'
                   }
                 ]
               },
@@ -158,8 +176,16 @@ export default {
                 },
                 decorator: [
                   // 'contacts.0.name',
+                  // {
+                  //   rules: [{ required: true, message: 'Please input your phone!' }]
+                  // }
                   {
-                    rules: [{ required: true, message: 'Please input your phone!' }]
+                    rules: [
+                      {
+                        validator: this.handleFieldValidate
+                      }
+                    ],
+                    validateTrigger: 'blur'
                   }
                 ]
               },
@@ -175,6 +201,14 @@ export default {
                   // {
                   //   rules: [{ required: true, message: 'Please input your sex!' }]
                   // }
+                  {
+                    rules: [
+                      {
+                        validator: this.handleFieldValidate
+                      }
+                    ],
+                    validateTrigger: 'blur'
+                  }
                 ]
               }
             ]
@@ -182,16 +216,6 @@ export default {
         ]
       }
     ]
-
-    // console.log(this.formDefinition)
-    // this.form = this.$form.createForm(this, {
-    //   name: 'global_state',
-    //   mapPropsToFields(props) {
-    //     return {
-    //       name: Form.createFormField({})
-    //     }
-    //   },
-    // })
   },
   mounted () {
     const { defaultValue } = this
@@ -210,6 +234,29 @@ export default {
           console.log(values)
         }
       })
+    },
+    handleFieldValidate (rule, value, callback) {
+      const { validate, form, schema } = this
+      const path = rule.fullField
+      const model = form.getFieldsValue()
+      // 移除空数据
+      removeEmptyValue(model)
+
+      const valid = validate(model)
+      let error
+
+      if (!valid) {
+        localize(validate.errors, schema)
+        const allErrors = parseErrors(validate.errors)
+
+        if (allErrors[path]) {
+          error = allErrors[path]
+        }
+
+        callback(error)
+      } else {
+        callback()
+      }
     }
   },
   render (h) {
