@@ -1,26 +1,27 @@
 import objectpath from 'objectpath'
 
-export default function (name, schema, options) {
+export default function (name, schema, options, props) {
   const def = {
     key: options.path
   }
-
-  def.title = typeof schema.title !== 'undefined' ? schema.title : name
+  const formItemProps = {
+    ...props,
+    label: schema.title || ''
+  }
 
   if (schema.description) {
-    def.description = schema.description
+    formItemProps.help = schema.description
   }
 
   if (options.required) {
-    def.required = true
+    formItemProps.required = true
   }
 
   if (options.col) {
     def.col = options.col
   }
 
-  // def.schema = schema
-
+  def.formItem = formItemProps
   options.lookup[objectpath.stringify(options.path)] = def
 
   return def

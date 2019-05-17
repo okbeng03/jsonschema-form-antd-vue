@@ -1,8 +1,8 @@
 export default function (def, schema) {
   const type = schema.type
 
-  if (type === 'number' || type === 'integer') {
-    def.type = 'a-input-number'
+  if (type === 'boolean') {
+    def.type = 'a-switch'
     def.decorator = [
       {
         rules: [
@@ -10,7 +10,7 @@ export default function (def, schema) {
             validator: this.handleFieldValidate
           }
         ],
-        validateTrigger: 'blur'
+        valuePropName: 'checked'
       }
     ]
   }

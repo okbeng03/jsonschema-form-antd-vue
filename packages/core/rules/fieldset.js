@@ -9,18 +9,19 @@ export default function (def, schema, options) {
   if (type === 'object') {
     if (parentType && parentType === 'array') {
       const size = _.size(schema.properties)
-      const itemType = size > 4 ? 'v-fieldset' : 'inline'
+      const itemType = size > 6 ? 'j-fieldset' : 'j-inline'
 
       def.type = itemType
 
-      if (itemType === 'inline') {
-        options.col = Math.floor(12 / size)
+      if (itemType === 'j-inline') {
+        options.col = Math.floor(24 / size)
       }
     } else {
-      def.type = 'v-fieldset'
+      def.type = 'j-fieldset'
     }
-    
+
     def.items = []
+    const columns = []
 
     _.each(schema.properties, (val, key) => {
       if (/\./.test(key)) {
@@ -32,6 +33,17 @@ export default function (def, schema, options) {
 
       const required = schema.required && _.indexOf(schema.required, key) !== -1
 
+      // options.columns
+      if (def.type === 'j-inline') {
+        columns.push({
+          col: options.col,
+          label: val.title || '',
+          required
+        })
+
+        val.title = ''
+      }
+
       this._parse(key, val, def.items, {
         ...options,
         path: path,
@@ -39,6 +51,9 @@ export default function (def, schema, options) {
         lookup: options.lookup
       })
     })
+
+    if (def.type === 'j-inline') {
+      options.parent.columns = columns
+    }
   }
 }
-      

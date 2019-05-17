@@ -14,33 +14,6 @@ const enumToOptions = function (enm) {
   return options
 }
 
-const getSchemaByPath = function (schema, path) {
-  if (!schema) {
-    throw new Error('schema is required!')
-  }
-
-  if (!path) {
-    return schema
-  }
-
-  const schemaPath = []
-  const len = path.length
-  path.forEach((p, idx) => {
-    if (p === '$index') {
-      schemaPath.push('items')
-    } else {
-      schemaPath.push(p)
-    }
-
-    if (idx !== len - 1 && path[idx + 1] !== '$index') {
-      schemaPath.push('properties')
-    }
-  })
-
-  schemaPath.splice(0, 0, 'properties')
-  return _.get(schema, schemaPath)
-}
-
 const parseErrors = function (errors) {
   const map = {}
 
@@ -63,14 +36,17 @@ const removeEmptyValue = function (model) {
     }
 
     if (_.isObject(value)) {
-      removeEmptyValue(value)
+      if (_.isEmpty(value)) {
+        model[key] = undef
+      } else {
+        removeEmptyValue(value)
+      }
     }
   })
 }
 
 export {
   enumToOptions,
-  getSchemaByPath,
   parseErrors,
   removeEmptyValue
 }

@@ -3,7 +3,7 @@ import objectpath from 'objectpath'
 import rule from './rule'
 import defaultRule from './rules/default'
 import arrayRule from './rules/array'
-import checkboxRule from './rules/checkbox'
+import switchRule from './rules/switch'
 import checkboxesRule from './rules/checkboxes'
 import dateRule from './rules/date'
 import fieldsetRule from './rules/fieldset'
@@ -13,7 +13,7 @@ import textRule from './rules/text'
 import imageUploadRule from './rules/image-upload'
 
 const rulesMap = {
-  checkbox: checkboxRule,
+  switch: switchRule,
   fieldset: fieldsetRule,
   checkboxes: checkboxesRule,
   array: arrayRule,
@@ -69,26 +69,39 @@ class Generator {
 
   /**
    * 生成表单模型
-   * @param {Object} schema 
-   * @param {Array} definition 
+   * @param {Object} schema
+   * @param {Array} definition
    */
-  parse (schema, definition = []) {
-    if (!(schema && schema.properties)) {
+  parse (schema, definition = [], formItemProps, handleFieldValidate) {
+    if (!schema || !(schema.properties || schema.items)) {
       throw new Error('schema no validate!')
     }
 
-    const options = {path: [], lookup: {}}
+    this.handleFieldValidate = handleFieldValidate
+    this.formItemProps = formItemProps
+
+    const options = { path: [], lookup: {} }
     const schemaForm = []
 
-    _.each(schema.properties, (val, key) => {
-      const required = schema.required && _.indexOf(schema.required, key) !== -1
+    if (schema.properties) {
+      _.each(schema.properties, (val, key) => {
+        const required = schema.required && _.indexOf(schema.required, key) !== -1
 
-      this._parse(key, val, schemaForm, {
-        path: [key],
-        required: required,
-        lookup: options.lookup
+        this._parse(key, val, schemaForm, {
+          path: [key],
+          required: required,
+          lookup: options.lookup
+        })
       })
-    })
+    } else {
+      _.each(schema.items, (val, idx) => {
+        this._parse(idx, val, schemaForm, {
+          path: [idx],
+          lookup: options.lookup,
+          parentType: 'array'
+        })
+      })
+    }
 
     // 再根据form definition合并form schema
     if (definition.length) {
@@ -102,15 +115,15 @@ class Generator {
 
   /**
    * 生成表单模型
-   * @param {Object} schema 
-   * @param {Array} definition 
+   * @param {Object} schema
+   * @param {Array} definition
    */
   _parse (name, schema, definition, options) {
     const rules = this.rules[schema.type]
     let def
 
     if (rules) {
-      def = defaultRule(name, schema, options)
+      def = defaultRule(name, schema, options, this.formItemProps)
 
       for (let i = 0, len = rules.length; i < len; i++) {
         rules[i].call(this, def, schema, options)
@@ -122,37 +135,6 @@ class Generator {
     }
 
     definition.push(def)
-  }
-
-  getDefaultModal (schema) {
-    const model = {}
-    
-    _.each(schema.properties, function (val, key) {
-      defaultValue(val, key, model)
-    })
-
-    return model
-  }
-}
-
-function defaultValue (schema, key, model) {
-  var type = schema.type
-
-  if (type === 'object') {
-    model[key] = {}
-
-    _.each(schema.properties, function (val, _key) {
-      defaultValue(val, _key, model[key])
-    })
-  } else if (type === 'array') {
-    model[key] = []
-    if (schema.items) {
-      defaultValue(schema.items, 0, model[key])
-    }
-  } else {
-    if (schema.default) {
-      model[key] = schema.default
-    }
   }
 }
 

@@ -29,6 +29,10 @@ export default {
         }
       }
     },
+    labelAlign: {
+      type: String,
+      default: 'right'
+    },
     wrapperCol: {
       type: Object,
       default () {
@@ -68,154 +72,172 @@ export default {
     }
   },
   created () {
-    const { schema, definition, ajv } = this
+    const { schema, definition, ajv, layout, labelCol, wrapperCol, colon, labelAlign } = this
+    let formItemProps = {
+      colon
+    }
+
+    if (layout !== 'vertical') {
+      formItemProps = {
+        ...formItemProps,
+        labelCol,
+        wrapperCol,
+        labelAlign
+      }
+    }
 
     // form definition
     this.validate = ajv.compile(schema)
     this.generator = new Generator()
-    // this.formDefinition = this.generator.parse(schema, definition)
-    this.formDefinition.definition = [
-      {
-        type: 'a-input',
-        key: ['name'],
-        group: {
-          label: '姓名',
-          required: true
-        },
-        decorator: [
-          // 'name',
-          {
-            rules: [
-              {
-                validator: this.handleFieldValidate
-              }
-            ],
-            validateTrigger: 'blur'
-          }
-        ]
-      },
-      {
-        type: 'a-input',
-        key: ['phone'],
-        group: {
-          label: '手机'
-        },
-        input: {
-          type: 'number'
-        },
-        decorator: [
-          // 'phone',
-          // {
-          //   rules: [{ required: true, message: 'Please input your phone!' }]
-          // }
-          {
-            rules: [
-              {
-                validator: this.handleFieldValidate
-              }
-            ],
-            validateTrigger: 'blur'
-          }
-        ]
-      },
-      {
-        type: 'j-list',
-        key: ['contacts'],
-        label: '通讯录',
-        columns: [
-          {
-            col: 8,
-            label: '姓名',
-            required: true
-          },
-          {
-            col: 8,
-            label: '联系方式',
-            required: true
-          },
-          {
-            col: 8,
-            label: '性别'
-          }
-        ],
-        items: [
-          {
-            type: 'j-inline',
-            key: ['contacts', '0'],
-            items: [
-              {
-                type: 'a-input',
-                key: ['contacts', '0', 'name'],
-                col: 8,
-                group: {
-                  label: '',
-                  required: true
-                },
-                decorator: [
-                  // 'contacts.0.name',
-                  // {
-                  //   rules: [{ required: true, message: 'Please input your name!' }]
-                  // }
-                  {
-                    rules: [
-                      {
-                        validator: this.handleFieldValidate
-                      }
-                    ],
-                    validateTrigger: 'blur'
-                  }
-                ]
-              },
-              {
-                type: 'a-input',
-                key: ['contacts', '0', 'phone'],
-                col: 8,
-                group: {
-                  label: '',
-                  required: true
-                },
-                decorator: [
-                  // 'contacts.0.name',
-                  // {
-                  //   rules: [{ required: true, message: 'Please input your phone!' }]
-                  // }
-                  {
-                    rules: [
-                      {
-                        validator: this.handleFieldValidate
-                      }
-                    ],
-                    validateTrigger: 'blur'
-                  }
-                ]
-              },
-              {
-                type: 'a-input',
-                key: ['contacts', '0', 'sex'],
-                col: 8,
-                group: {
-                  label: ''
-                },
-                decorator: [
-                  // 'contacts.0.name',
-                  // {
-                  //   rules: [{ required: true, message: 'Please input your sex!' }]
-                  // }
-                  {
-                    rules: [
-                      {
-                        validator: this.handleFieldValidate
-                      }
-                    ],
-                    validateTrigger: 'blur'
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    // this.formDefinition =
+    console.log(schema)
+    const a = this.generator.parse(schema, definition, formItemProps, this.handleFieldValidate.bind(this))
+    console.log(JSON.stringify(a), a)
+    this.formDefinition.definition = a
+    // this.formDefinition.definition = [
+    //   {
+    //     type: 'a-input',
+    //     key: ['name'],
+    //     formItem: {
+    //       label: '姓名',
+    //       required: true
+    //     },
+    //     decorator: [
+    //       // 'name',
+    //       {
+    //         rules: [
+    //           {
+    //             validator: this.handleFieldValidate
+    //           }
+    //         ],
+    //         validateTrigger: 'blur'
+    //       }
+    //     ]
+    //   },
+    //   {
+    //     type: 'a-input',
+    //     key: ['phone'],
+    //     formItem: {
+    //       label: '手机'
+    //     },
+    //     input: {
+    //       type: 'number'
+    //     },
+    //     decorator: [
+    //       // 'phone',
+    //       // {
+    //       //   rules: [{ required: true, message: 'Please input your phone!' }]
+    //       // }
+    //       {
+    //         rules: [
+    //           {
+    //             validator: this.handleFieldValidate
+    //           }
+    //         ],
+    //         validateTrigger: 'blur'
+    //       }
+    //     ]
+    //   },
+    //   {
+    //     type: 'j-list',
+    //     key: ['contacts'],
+    //     formItem: {
+    //       label: '通讯录'
+    //     },
+    //     columns: [
+    //       {
+    //         col: 8,
+    //         label: '姓名',
+    //         required: true
+    //       },
+    //       {
+    //         col: 8,
+    //         label: '联系方式',
+    //         required: true
+    //       },
+    //       {
+    //         col: 8,
+    //         label: '性别'
+    //       }
+    //     ],
+    //     items: [
+    //       {
+    //         type: 'j-inline',
+    //         key: ['contacts', '0'],
+    //         items: [
+    //           {
+    //             type: 'a-input',
+    //             key: ['contacts', '0', 'name'],
+    //             col: 8,
+    //             formItem: {
+    //               label: '',
+    //               required: true
+    //             },
+    //             decorator: [
+    //               // 'contacts.0.name',
+    //               // {
+    //               //   rules: [{ required: true, message: 'Please input your name!' }]
+    //               // }
+    //               {
+    //                 rules: [
+    //                   {
+    //                     validator: this.handleFieldValidate
+    //                   }
+    //                 ],
+    //                 validateTrigger: 'blur'
+    //               }
+    //             ]
+    //           },
+    //           {
+    //             type: 'a-input',
+    //             key: ['contacts', '0', 'phone'],
+    //             col: 8,
+    //             formItem: {
+    //               label: '',
+    //               required: true
+    //             },
+    //             decorator: [
+    //               // 'contacts.0.name',
+    //               // {
+    //               //   rules: [{ required: true, message: 'Please input your phone!' }]
+    //               // }
+    //               {
+    //                 rules: [
+    //                   {
+    //                     validator: this.handleFieldValidate
+    //                   }
+    //                 ],
+    //                 validateTrigger: 'blur'
+    //               }
+    //             ]
+    //           },
+    //           {
+    //             type: 'a-input',
+    //             key: ['contacts', '0', 'sex'],
+    //             col: 8,
+    //             formItem: {
+    //               label: ''
+    //             },
+    //             decorator: [
+    //               // 'contacts.0.name',
+    //               // {
+    //               //   rules: [{ required: true, message: 'Please input your sex!' }]
+    //               // }
+    //               {
+    //                 rules: [
+    //                   {
+    //                     validator: this.handleFieldValidate
+    //                   }
+    //                 ],
+    //                 validateTrigger: 'blur'
+    //               }
+    //             ]
+    //           }
+    //         ]
+    //       }
+    //     ]
+    //   }
+    // ]
   },
   mounted () {
     const { defaultValue } = this

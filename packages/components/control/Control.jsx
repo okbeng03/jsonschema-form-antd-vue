@@ -7,7 +7,7 @@ const Control = {
     const { path, definition } = this
     const component = definition.type
     const groupProps = {
-      props: definition.group
+      props: definition.formItem
     }
     const inputProps = {
       props: definition.input
@@ -30,9 +30,9 @@ const Control = {
         </a-form-item>
       )
     } else {
-      if (definition.label) {
+      if (definition.formItem.label) {
         return (
-          <a-form-item label={ definition.label }>
+          <a-form-item { ...groupProps }>
             <component path={ name } { ...inputProps }></component>
           </a-form-item>
         )

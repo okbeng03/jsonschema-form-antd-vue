@@ -1,5 +1,5 @@
 export default {
-  boolean: ['checkbox'],
+  boolean: ['switch'],
   object: ['fieldset'],
   array: ['checkboxes', 'array'],
   number: ['number'],
