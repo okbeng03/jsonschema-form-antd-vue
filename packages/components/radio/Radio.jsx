@@ -3,30 +3,24 @@ import FormMixin from '../../mixins/form'
 const Radio = {
   name: 'JRadio',
   mixins: [ FormMixin ],
-  data () {
-    const { $attrs, defaultValue } = this
-
-    return {
-      stateValue: defaultValue[$attrs.id] || false
-    }
+  model: {
+    prop: 'value',
+    event: 'change.value'
+  },
+  props: {
+    value: [ Boolean, String ]
   },
   render (h) {
-    const { definition, stateValue } = this
+    const { definition, value } = this
     const { options } = definition.input || {}
 
     if (options && options.length) {
       return (
-        <a-radio-group options={ options } onChange={ this.onChange } value={ stateValue } />
+        <a-radio-group options={ options } onChange={ this.onChange } value={ value } />
       )
     } else {
-      const props = {
-        attrs: {
-          checked: stateValue
-        }
-      }
-
       return (
-        <a-radio { ...this.$props } onChange={ this.onChange } { ...props }>{ definition.formItem.label }</a-radio>
+        <a-radio { ...this.$props } onChange={ this.onChange } checked={ value }>{ definition.formItem.label }</a-radio>
       )
     }
   },
@@ -34,7 +28,7 @@ const Radio = {
     onChange (e) {
       const target = e.target
       const value = target.value || target.checked
-      this.stateValue = value
+      // this.stateValue = value
       this.$emit('change', value)
     }
   }

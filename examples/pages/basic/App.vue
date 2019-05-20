@@ -5,6 +5,7 @@
 </template>
 
 <script>
+// import moment from 'moment'
 export default {
   data () {
     return {
@@ -57,6 +58,11 @@ export default {
               required: ['name', 'phone']
             }
           },
+          birthday: {
+            type: 'string',
+            title: '出生日期',
+            format: 'time'
+          },
           job: {
             type: 'string',
             title: '职业',
@@ -67,7 +73,7 @@ export default {
             title: '同意协议'
           }
         },
-        required: ['name', 'phone', 'hobby', 'contacts', 'agree']
+        required: ['name', 'phone', 'hobby', 'contacts', 'birthday', 'agree']
       },
       definition: [
         'name',
@@ -75,8 +81,16 @@ export default {
         'hobby',
         'contacts',
         {
+          key: 'birthday'
+          // input: {
+          //   disabledDate: function (current) {
+          //     return current && current < moment().endOf('day')
+          //   }
+          // }
+        },
+        {
           key: 'agree',
-          type: 'a-radio'
+          type: 'a-checkbox'
         },
         {
           key: 'job',
@@ -92,6 +106,7 @@ export default {
             sex: '2'
           }
         ],
+        birthday: '12:00:00',
         agree: true,
         job: 'Teacher'
       }

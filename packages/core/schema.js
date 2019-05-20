@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import extend from 'extend'
 import objectpath from 'objectpath'
 import rule from './rule'
 import defaultRule from './rules/default'
@@ -195,13 +196,14 @@ function combine (form, schemaForm, lookup) {
           }
         }
 
-        obj = Object.assign({}, def, obj)
-        delete obj.schema
+        // obj = Object.assign({}, def, obj)
+        obj = extend(true, {}, def, obj)
         // _.each(def, function (val, key) {
         //   if (typeof obj[key] === 'undefined') {
         //     obj[key] = val
         //   }
         // })
+        delete obj.schema
       }
 
       delete lookup[path]

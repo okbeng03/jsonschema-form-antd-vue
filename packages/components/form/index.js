@@ -7,6 +7,7 @@ import Inline from '../inline'
 import Control from '../control'
 import JCheckbox from '../checkbox'
 import JRadio from '../radio'
+import DateTimePicker from '../datetime'
 
 /* istanbul ignore next */
 JForm.install = function (Vue) {
@@ -28,6 +29,7 @@ JForm.install = function (Vue) {
   Vue.use(Inline)
   Vue.use(JCheckbox)
   Vue.use(JRadio)
+  Vue.use(DateTimePicker)
 
   Vue.component(JForm.name, JForm)
 }
