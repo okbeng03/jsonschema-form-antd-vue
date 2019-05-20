@@ -164,9 +164,12 @@ function combine (form, schemaForm, lookup) {
     }
 
     if (obj.key && typeof obj.key === 'string') {
-      obj.key = obj.key.replace(/\[\]/g, '.$index')
+      obj.key = obj.key.replace(/\[\]/g, '[0].')
       obj.key = objectpath.parse(obj.key)
     }
+
+    // 兼容jsonschema-form-vue definition格式
+    obj = compatOldVersion(obj)
 
     // if (def.options) {
     //   def.options = formatOptions(obj.options)
@@ -196,14 +199,18 @@ function combine (form, schemaForm, lookup) {
           }
         }
 
-        // obj = Object.assign({}, def, obj)
         obj = extend(true, {}, def, obj)
-        // _.each(def, function (val, key) {
-        //   if (typeof obj[key] === 'undefined') {
-        //     obj[key] = val
-        //   }
-        // })
         delete obj.schema
+      }  else {
+        const rule = this.rules[obj.type]
+
+        if (rule) {
+          def = {}
+  
+          rule[0].call(this, def)
+          obj.type = def.type
+          obj = extend(true, {}, def, obj)
+        }
       }
 
       delete lookup[path]
@@ -236,6 +243,49 @@ function combine (form, schemaForm, lookup) {
   }
 
   return definition
+}
+
+// 兼容jsonschema-form-vue definition结构
+function compatOldVersion (data) {
+  let def = extend(true, {}, data)
+  let obj = {
+    type: def.type,
+    key: def.key
+  }
+  delete def.type
+  delete def.key
+  let formItem = {}
+  let input = {}
+
+  if (def.title) {
+    formItem.label = def.title
+    delete def.title
+  }
+
+  if (def.description) {
+    formItem.help = def.description
+    delete def.description
+  }
+
+  if (def.col) {
+    obj.col = def.col
+    delete def.col
+  }
+
+  if (def.tpl) {
+    input.html = def.tpl
+    delete def.tpl
+  }
+  
+  input = {
+    ...input,
+    ...def
+  }
+
+  obj.formItem = formItem
+  obj.input = input
+
+  return obj
 }
 
 export default Generator

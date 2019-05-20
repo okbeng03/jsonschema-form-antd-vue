@@ -24,7 +24,7 @@ const DateTimePicker = {
   },
   watch: {
     value (val) {
-      this.stateValue = moment(val, this.format)
+      this.stateValue = val ? moment(val, this.format) : null
     }
   },
   render (h) {

@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <vue-form :form="form" :schema="schema" :definition="definition" :layout="'vertical'" :default-value="model"></vue-form>
+    <vue-form :form="form" :schema="schema" :definition="definition" :default-value="model" :hideReset="false"></vue-form>
   </div>
 </template>
 
@@ -61,7 +61,7 @@ export default {
           birthday: {
             type: 'string',
             title: '出生日期',
-            format: 'time'
+            format: 'date'
           },
           job: {
             type: 'string',
@@ -76,8 +76,21 @@ export default {
         required: ['name', 'phone', 'hobby', 'contacts', 'birthday', 'agree']
       },
       definition: [
+        {
+          type: 'html',
+          key: 'html',
+          formItem: {
+            label: '111'
+          },
+          input: {
+            html: '<a href="##">####</a>'
+          }
+        },
         'name',
-        'phone',
+        {
+          title: '联系方式',
+          key: 'phone'
+        },
         'hobby',
         'contacts',
         {
@@ -106,7 +119,7 @@ export default {
             sex: '2'
           }
         ],
-        birthday: '12:00:00',
+        birthday: '1989-05-14',
         agree: true,
         job: 'Teacher'
       }

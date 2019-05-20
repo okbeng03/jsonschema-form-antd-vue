@@ -30,7 +30,7 @@ const Control = {
         </a-form-item>
       )
     } else {
-      if (definition.formItem.label) {
+      if (definition.formItem && definition.formItem.label) {
         return (
           <a-form-item { ...groupProps }>
             <component path={ name } { ...inputProps }></component>

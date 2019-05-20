@@ -1,5 +1,4 @@
 import _ from 'lodash'
-// import Generator from '../../core/schema'
 import validator from '../../validate'
 import localize from '../../validate/localize'
 import { parseErrors, removeEmptyValue } from '../../util/util'
@@ -24,7 +23,7 @@ export default {
       type: Object,
       default () {
         return {
-          span: 5,
+          span: 4,
           offset: 0
         }
       }
@@ -37,7 +36,7 @@ export default {
       type: Object,
       default () {
         return {
-          span: 19,
+          span: 20,
           offset: 0
         }
       }
@@ -88,155 +87,10 @@ export default {
 
     // form definition
     this.validate = ajv.compile(schema)
-    // this.generator = new Generator()
     // this.formDefinition =
     const a = this.$generator.parse(schema, definition, formItemProps, this.handleFieldValidate.bind(this))
     console.log(JSON.stringify(a), a)
     this.formDefinition.definition = a
-    // this.formDefinition.definition = [
-    //   {
-    //     type: 'a-input',
-    //     key: ['name'],
-    //     formItem: {
-    //       label: '姓名',
-    //       required: true
-    //     },
-    //     decorator: [
-    //       // 'name',
-    //       {
-    //         rules: [
-    //           {
-    //             validator: this.handleFieldValidate
-    //           }
-    //         ],
-    //         validateTrigger: 'blur'
-    //       }
-    //     ]
-    //   },
-    //   {
-    //     type: 'a-input',
-    //     key: ['phone'],
-    //     formItem: {
-    //       label: '手机'
-    //     },
-    //     input: {
-    //       type: 'number'
-    //     },
-    //     decorator: [
-    //       // 'phone',
-    //       // {
-    //       //   rules: [{ required: true, message: 'Please input your phone!' }]
-    //       // }
-    //       {
-    //         rules: [
-    //           {
-    //             validator: this.handleFieldValidate
-    //           }
-    //         ],
-    //         validateTrigger: 'blur'
-    //       }
-    //     ]
-    //   },
-    //   {
-    //     type: 'j-list',
-    //     key: ['contacts'],
-    //     formItem: {
-    //       label: '通讯录'
-    //     },
-    //     columns: [
-    //       {
-    //         col: 8,
-    //         label: '姓名',
-    //         required: true
-    //       },
-    //       {
-    //         col: 8,
-    //         label: '联系方式',
-    //         required: true
-    //       },
-    //       {
-    //         col: 8,
-    //         label: '性别'
-    //       }
-    //     ],
-    //     items: [
-    //       {
-    //         type: 'j-inline',
-    //         key: ['contacts', '0'],
-    //         items: [
-    //           {
-    //             type: 'a-input',
-    //             key: ['contacts', '0', 'name'],
-    //             col: 8,
-    //             formItem: {
-    //               label: '',
-    //               required: true
-    //             },
-    //             decorator: [
-    //               // 'contacts.0.name',
-    //               // {
-    //               //   rules: [{ required: true, message: 'Please input your name!' }]
-    //               // }
-    //               {
-    //                 rules: [
-    //                   {
-    //                     validator: this.handleFieldValidate
-    //                   }
-    //                 ],
-    //                 validateTrigger: 'blur'
-    //               }
-    //             ]
-    //           },
-    //           {
-    //             type: 'a-input',
-    //             key: ['contacts', '0', 'phone'],
-    //             col: 8,
-    //             formItem: {
-    //               label: '',
-    //               required: true
-    //             },
-    //             decorator: [
-    //               // 'contacts.0.name',
-    //               // {
-    //               //   rules: [{ required: true, message: 'Please input your phone!' }]
-    //               // }
-    //               {
-    //                 rules: [
-    //                   {
-    //                     validator: this.handleFieldValidate
-    //                   }
-    //                 ],
-    //                 validateTrigger: 'blur'
-    //               }
-    //             ]
-    //           },
-    //           {
-    //             type: 'a-input',
-    //             key: ['contacts', '0', 'sex'],
-    //             col: 8,
-    //             formItem: {
-    //               label: ''
-    //             },
-    //             decorator: [
-    //               // 'contacts.0.name',
-    //               // {
-    //               //   rules: [{ required: true, message: 'Please input your sex!' }]
-    //               // }
-    //               {
-    //                 rules: [
-    //                   {
-    //                     validator: this.handleFieldValidate
-    //                   }
-    //                 ],
-    //                 validateTrigger: 'blur'
-    //               }
-    //             ]
-    //           }
-    //         ]
-    //       }
-    //     ]
-    //   }
-    // ]
   },
   mounted () {
     const { defaultValue } = this
@@ -253,6 +107,7 @@ export default {
         console.log(errors)
         if (!errors) {
           console.log(values)
+          this.$emit('submit', values)
         }
       })
     },
@@ -278,10 +133,20 @@ export default {
       } else {
         callback()
       }
+    },
+    handleClear () {
+      this.form.resetFields()
     }
   },
   render (h) {
-    const { form, layout, prefixCls, hideRequiredMark, handleSubmit } = this
+    const { form, layout, prefixCls, hideRequiredMark, handleSubmit, hideReset } = this
+    const resetBtn = hideReset ? null : (
+      <a-popconfirm
+          title="确认重置？"
+          onConfirm={ () => this.handleClear() }>
+        <a-button type="danger" style="margin-left: 16px;">重置</a-button>
+      </a-popconfirm>
+    )
 
     return (
       <a-form
@@ -295,6 +160,7 @@ export default {
         </j-fieldset>
         <a-form-item>
           <a-button type="primary" html-type="submit">提交</a-button>
+          { resetBtn }
         </a-form-item>
       </a-form>
     )

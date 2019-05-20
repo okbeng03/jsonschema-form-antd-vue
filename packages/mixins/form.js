@@ -70,15 +70,27 @@ export default {
     //   })
     // }
     getFieldDefaultValue (key) {
+      if (!key) {
+        return
+      }
+
       return _.get(this.defaultValue, key)
     },
     getPath (key) {
+      if (!key) {
+        return
+      }
+
       const { path } = this
       return key.map((item, idx) => {
         return path[idx] || item
       })
     },
     getDecoratorId (key) {
+      if (!key) {
+        return
+      }
+
       const id = this.getPath(key).join('.')
 
       return id.replace(/\.(\d+)\./g, '[$1].')
