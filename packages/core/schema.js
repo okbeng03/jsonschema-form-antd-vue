@@ -24,14 +24,14 @@ const rulesMap = {
   image: imageUploadRule
 }
 
-const BUILD_IN_TYPE = [
-  'text',
-  'select',
-  'textarea',
-  'html',
-  'grid',
-  'fieldset'
-]
+// const BUILD_IN_TYPE = {
+//   'text': 'a-input',
+//   'select': 'a-select',
+//   'textarea': 'a-input',
+//   'html',
+//   'grid',
+//   'fieldset'
+// }
 
 class Generator {
   constructor () {
@@ -61,10 +61,11 @@ class Generator {
     const rules = this.rules[type]
 
     if (!rules) {
-      throw new Error(`不支持的类型: ${type}`)
+      this.rules[type] = [ rule ]
+      // throw new Error(`不支持的类型: ${type}`)
+    } else {
+      rules.splice(idx, 0, rule)
     }
-
-    rules.splice(idx, 0, rule)
   }
 
   /**
@@ -105,7 +106,7 @@ class Generator {
 
     // 再根据form definition合并form schema
     if (definition.length) {
-      definition = combine(definition, schemaForm, options.lookup)
+      definition = combine.call(this, definition, schemaForm, options.lookup)
     } else {
       definition = schemaForm
     }
@@ -177,19 +178,39 @@ function combine (form, schemaForm, lookup) {
       def = lookup[path]
 
       if (def) {
-        _.each(def, function (val, key) {
-          if (typeof obj[key] === 'undefined') {
-            obj[key] = val
+        // 当类型不相等，要处理，获取正确def
+        if (def.type !== obj.type) {
+          const rule = this.rules[obj.type]
+
+          if (rule) {
+            def = {
+              formItem: def.formItem,
+              key: def.key,
+              col: def.col,
+              schema: def.schema
+            }
+
+            rule[0].call(this, def, def.schema)
+            obj.type = def.type
           }
-        })
+        }
+
+        obj = Object.assign({}, def, obj)
+        delete obj.schema
+        // _.each(def, function (val, key) {
+        //   if (typeof obj[key] === 'undefined') {
+        //     obj[key] = val
+        //   }
+        // })
       }
+
       delete lookup[path]
     }
 
     // 保留html,添加v-前缀
-    if (_.indexOf(BUILD_IN_TYPE, obj.type) > -1) {
-      obj.type = 'v-' + obj.type
-    }
+    // if (_.indexOf(BUILD_IN_TYPE, obj.type) > -1) {
+    //   obj.type = 'v-' + obj.type
+    // }
 
     if (obj.items) {
       if (def) {

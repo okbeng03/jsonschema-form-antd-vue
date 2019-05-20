@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import Generator from '../../core/schema'
+// import Generator from '../../core/schema'
 import validator from '../../validate'
 import localize from '../../validate/localize'
 import { parseErrors, removeEmptyValue } from '../../util/util'
@@ -88,10 +88,9 @@ export default {
 
     // form definition
     this.validate = ajv.compile(schema)
-    this.generator = new Generator()
+    // this.generator = new Generator()
     // this.formDefinition =
-    console.log(schema)
-    const a = this.generator.parse(schema, definition, formItemProps, this.handleFieldValidate.bind(this))
+    const a = this.$generator.parse(schema, definition, formItemProps, this.handleFieldValidate.bind(this))
     console.log(JSON.stringify(a), a)
     this.formDefinition.definition = a
     // this.formDefinition.definition = [

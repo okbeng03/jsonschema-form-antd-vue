@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <vue-form :form="form" :schema="schema" :layout="'vertical'" :default-value="model"></vue-form>
+    <vue-form :form="form" :schema="schema" :definition="definition" :layout="'vertical'" :default-value="model"></vue-form>
   </div>
 </template>
 
@@ -56,19 +56,34 @@ export default {
               },
               required: ['name', 'phone']
             }
+          },
+          agree: {
+            type: 'boolean',
+            title: '同意协议'
           }
         },
-        required: ['name', 'phone', 'hobby', 'contacts']
+        required: ['name', 'phone', 'hobby', 'contacts', 'agree']
       },
+      definition: [
+        'name',
+        'phone',
+        'hobby',
+        'contacts',
+        {
+          key: 'agree',
+          type: 'a-checkbox'
+        }
+      ],
       model: {
         name: '王昌彬',
         contacts: [
           {
             name: '王瑶',
-            phone: '1233456771',
+            phone: '15268801392',
             sex: '2'
           }
-        ]
+        ],
+        agree: true
       }
     }
   }

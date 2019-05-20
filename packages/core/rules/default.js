@@ -22,6 +22,7 @@ export default function (name, schema, options, props) {
   }
 
   def.formItem = formItemProps
+  def.schema = schema
   options.lookup[objectpath.stringify(options.path)] = def
 
   return def
