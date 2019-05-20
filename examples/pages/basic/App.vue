@@ -57,6 +57,11 @@ export default {
               required: ['name', 'phone']
             }
           },
+          job: {
+            type: 'string',
+            title: '职业',
+            enums: ['IT', 'Teacher', 'Doctor']
+          },
           agree: {
             type: 'boolean',
             title: '同意协议'
@@ -71,7 +76,11 @@ export default {
         'contacts',
         {
           key: 'agree',
-          type: 'a-checkbox'
+          type: 'a-radio'
+        },
+        {
+          key: 'job',
+          type: 'a-radio'
         }
       ],
       model: {
@@ -83,7 +92,8 @@ export default {
             sex: '2'
           }
         ],
-        agree: true
+        agree: true,
+        job: 'Teacher'
       }
     }
   }

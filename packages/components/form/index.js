@@ -6,6 +6,7 @@ import List from '../array'
 import Inline from '../inline'
 import Control from '../control'
 import JCheckbox from '../checkbox'
+import JRadio from '../radio'
 
 /* istanbul ignore next */
 JForm.install = function (Vue) {
@@ -26,6 +27,7 @@ JForm.install = function (Vue) {
   Vue.use(Control)
   Vue.use(Inline)
   Vue.use(JCheckbox)
+  Vue.use(JRadio)
 
   Vue.component(JForm.name, JForm)
 }
