@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import JForm from '../../../packages/components'
+import JForm from '../../../packages'
 import App from './App'
 
 Vue.use(JForm)

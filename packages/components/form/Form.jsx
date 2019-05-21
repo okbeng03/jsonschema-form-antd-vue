@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import validator from '../../validate'
+
 import localize from '../../validate/localize'
 import { parseErrors, removeEmptyValue } from '../../util/util'
 
@@ -47,13 +47,13 @@ export default {
     },
     schema: Object,
     definition: Array,
-    defaultValue: [Object, Array],
-    ajv: {
-      type: Object,
-      default: () => {
-        return validator()
-      }
-    }
+    defaultValue: [Object, Array]
+    // ajv: {
+    //   type: Object,
+    //   default: () => {
+    //     return validator()
+    //   }
+    // }
   },
   data () {
     return {
@@ -71,7 +71,7 @@ export default {
     }
   },
   created () {
-    const { schema, definition, ajv, layout, labelCol, wrapperCol, colon, labelAlign } = this
+    const { schema, definition, layout, labelCol, wrapperCol, colon, labelAlign } = this
     let formItemProps = {
       colon
     }
@@ -86,7 +86,7 @@ export default {
     }
 
     // form definition
-    this.validate = ajv.compile(schema)
+    this.validate = this.$validator.compile(schema)
     this.formDefinition.definition = this.$generator.parse(schema, definition, formItemProps, this.handleFieldValidate.bind(this))
   },
   mounted () {
