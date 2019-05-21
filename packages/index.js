@@ -39,5 +39,6 @@ export {
 }
 
 export default {
-  install
+  install,
+  version: require('../package.json').version
 }

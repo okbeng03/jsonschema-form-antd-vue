@@ -19,3 +19,10 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
+
+# dotenv environment variables file
+dist
+lib
+es
+package-lock.json
+output.js

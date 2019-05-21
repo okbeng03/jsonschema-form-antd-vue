@@ -2,11 +2,15 @@
   "name": "jsonschema-form-antd-vue",
   "version": "0.1.0",
   "private": true,
+  "module": "es/index/index.js",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
+  "files": [
+    "es"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/okbeng03/jsonschema-form-antd-vue.git"
