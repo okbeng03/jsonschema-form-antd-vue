@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <vue-form :form="form" :schema="schema" :definition="definition" :default-value="model" :hideReset="false"></vue-form>
+    <vue-form  :schema="schema" :definition="definition" :default-value="model" :hide-reset="false" @submit="onSubmit"></vue-form>
   </div>
 </template>
 
@@ -9,7 +9,6 @@
 export default {
   data () {
     return {
-      form: this.$form.createForm(this),
       schema: {
         title: 'basic',
         type: 'object',
@@ -123,6 +122,11 @@ export default {
         agree: true,
         job: 'Teacher'
       }
+    }
+  },
+  methods: {
+    onSubmit (data) {
+      console.log('submit: ', data)
     }
   }
 }

@@ -1,12 +1,18 @@
+import extend from 'extend'
 import objectpath from 'objectpath'
 
-export default function (name, schema, options, props) {
+export default function (name, schema = {}, options, props = {}) {
   const def = {
     key: options.path
   }
+  props = extend(true, {}, props)
   const formItemProps = {
     ...props,
     label: schema.title || ''
+  }
+
+  if (formItemProps.label === '' && formItemProps.wrapperCol) {
+    formItemProps.wrapperCol.span = formItemProps.wrapperCol.span + formItemProps.labelCol.span + formItemProps.labelCol.offset
   }
 
   if (schema.description) {

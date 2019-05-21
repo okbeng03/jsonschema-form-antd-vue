@@ -87,10 +87,7 @@ export default {
 
     // form definition
     this.validate = ajv.compile(schema)
-    // this.formDefinition =
-    const a = this.$generator.parse(schema, definition, formItemProps, this.handleFieldValidate.bind(this))
-    console.log(JSON.stringify(a), a)
-    this.formDefinition.definition = a
+    this.formDefinition.definition = this.$generator.parse(schema, definition, formItemProps, this.handleFieldValidate.bind(this))
   },
   mounted () {
     const { defaultValue } = this
@@ -139,14 +136,19 @@ export default {
     }
   },
   render (h) {
-    const { form, layout, prefixCls, hideRequiredMark, handleSubmit, hideReset } = this
+    const { form, layout, prefixCls, hideRequiredMark, handleSubmit, hideReset, labelCol, wrapperCol } = this
     const resetBtn = hideReset ? null : (
       <a-popconfirm
-          title="确认重置？"
-          onConfirm={ () => this.handleClear() }>
+        title="确认重置？"
+        onConfirm={ () => this.handleClear() }
+      >
         <a-button type="danger" style="margin-left: 16px;">重置</a-button>
       </a-popconfirm>
     )
+    const actionWrapperCol = {
+      span: wrapperCol.span,
+      offset: labelCol.span + labelCol.offset
+    }
 
     return (
       <a-form
@@ -158,7 +160,7 @@ export default {
       >
         <j-fieldset>
         </j-fieldset>
-        <a-form-item>
+        <a-form-item wrapperCol={ actionWrapperCol }>
           <a-button type="primary" html-type="submit">提交</a-button>
           { resetBtn }
         </a-form-item>

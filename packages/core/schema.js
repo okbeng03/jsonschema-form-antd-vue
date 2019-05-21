@@ -200,13 +200,27 @@ function combine (form, schemaForm, lookup) {
         }
 
         obj = extend(true, {}, def, obj)
+
+        // wrapper col span
+        if (def.formItem.label !== obj.formItem.label && (def.formItem.label === '' || obj.formItem.label === '')) {
+          if (def.formItem.label === '') {
+            obj.formItem.wrapperCol.span = obj.formItem.wrapperCol.span - obj.formItem.labelCol.span - obj.formItem.labelCol.offset
+          } else {
+            obj.formItem.wrapperCol.span = obj.formItem.wrapperCol.span + obj.formItem.labelCol.span + obj.formItem.labelCol.offset
+          }
+        }
+
         delete obj.schema
-      }  else {
+      } else {
         const rule = this.rules[obj.type]
 
         if (rule) {
-          def = {}
-  
+          def = {
+            formItem: {
+              ...this.formItemProps
+            }
+          }
+
           rule[0].call(this, def)
           obj.type = def.type
           obj = extend(true, {}, def, obj)
@@ -215,11 +229,6 @@ function combine (form, schemaForm, lookup) {
 
       delete lookup[path]
     }
-
-    // 保留html,添加v-前缀
-    // if (_.indexOf(BUILD_IN_TYPE, obj.type) > -1) {
-    //   obj.type = 'v-' + obj.type
-    // }
 
     if (obj.items) {
       if (def) {
@@ -257,7 +266,7 @@ function compatOldVersion (data) {
   let formItem = {}
   let input = {}
 
-  if (def.title) {
+  if (typeof def.title !== 'undefined') {
     formItem.label = def.title
     delete def.title
   }
@@ -276,7 +285,12 @@ function compatOldVersion (data) {
     input.html = def.tpl
     delete def.tpl
   }
-  
+
+  formItem = extend(true, {}, formItem, def.formItem)
+  delete def.formItem
+  input = extend(true, {}, input, def.input)
+  delete def.formItem
+
   input = {
     ...input,
     ...def
