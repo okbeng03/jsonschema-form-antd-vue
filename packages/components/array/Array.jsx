@@ -1,7 +1,6 @@
 import classNames from 'classnames'
 import draggable from 'vuedraggable'
 import FormMixin from '../../mixins/form'
-import './css/index.scss'
 
 const List = {
   name: 'JList',

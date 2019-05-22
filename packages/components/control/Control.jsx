@@ -10,9 +10,11 @@ const Control = {
       props: definition.formItem
     }
     const inputProps = {
-      props: definition.input
+      props: {
+        ...definition.input,
+        path: this.getPath(path)
+      }
     }
-    const name = this.getPath(path)
 
     if (definition.decorator) {
       const id = this.getDecoratorId(path)
@@ -26,18 +28,18 @@ const Control = {
 
       return (
         <a-form-item { ...groupProps }>
-          <component path={ name } { ...inputProps }></component>
+          { h(component, inputProps) }
         </a-form-item>
       )
     } else {
       if (definition.formItem && definition.formItem.label) {
         return (
           <a-form-item { ...groupProps }>
-            <component path={ name } { ...inputProps }></component>
+            { h(component, inputProps) }
           </a-form-item>
         )
       } else {
-        return <component path={ name } { ...inputProps }></component>
+        return h(component, inputProps)
       }
     }
   }

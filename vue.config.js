@@ -23,12 +23,16 @@ module.exports = {
   chainWebpack: config => {
     if (process.env.NODE_ENV === 'production') {
       config.externals({
-        vue: 'Vue'
+        vue: 'vue'
       })
       config.output.filename('[name]/index.js')
+      // config.output.library('JsonSchemaForm')
+      // config.output.libraryTarget('umd')
+      config.performance.hints(false)
       config.plugins.delete('copy')
       config.optimization.delete('minimizer')
       config.optimization.delete('splitChunks')
+      config.optimization.minimize(false)
 
       const entry = Object.keys(util.getEntries('./packages/components/*/*.js'))
       entry.unshift('index')

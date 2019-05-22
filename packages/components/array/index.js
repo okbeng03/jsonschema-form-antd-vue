@@ -1,4 +1,5 @@
 import List from './Array'
+import './style/index.less'
 
 /* istanbul ignore next */
 List.install = function (Vue) {

@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <vue-form  :schema="schema" :definition="definition" :default-value="model" :hide-reset="false" @submit="onSubmit"></vue-form>
+    <vue-form :schema="schema" :definition="definition" :default-value="model" :hide-reset="false" @submit="onSubmit"></vue-form>
   </div>
 </template>
 
