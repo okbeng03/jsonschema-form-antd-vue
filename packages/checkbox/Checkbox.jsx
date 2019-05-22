@@ -1,4 +1,4 @@
-import FormMixin from '../../mixins/form'
+import FormMixin from '../mixins'
 
 const Checkbox = {
   name: 'JCheckbox',
@@ -10,20 +10,8 @@ const Checkbox = {
   props: {
     value: Boolean
   },
-  // data () {
-  //   const { $attrs, defaultValue } = this
-
-  //   return {
-  //     stateValue: defaultValue[$attrs.id] || false
-  //   }
-  // },
   render (h) {
     const { definition, value } = this
-    // const props = {
-    //   attrs: {
-    //     checked: stateValue
-    //   }
-    // }
 
     return (
       <a-checkbox { ...this.$props } onChange={ this.onChange } checked={ value }>{ definition.formItem.label }</a-checkbox>
@@ -31,7 +19,6 @@ const Checkbox = {
   },
   methods: {
     onChange (e) {
-      // this.stateValue = e.target.checked
       this.$emit('change', e.target.checked)
     }
   }

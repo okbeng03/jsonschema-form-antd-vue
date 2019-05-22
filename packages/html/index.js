@@ -1,5 +1,5 @@
 import Html from './Html'
-import htmlRule from '../../core/rules/html'
+import htmlRule from '../core/rules/html'
 
 /* istanbul ignore next */
 Html.install = function (Vue) {

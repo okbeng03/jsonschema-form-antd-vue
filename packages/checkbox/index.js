@@ -1,5 +1,5 @@
 import Checkbox from './Checkbox'
-import checkboxRule from '../../core/rules/checkbox'
+import checkboxRule from '../core/rules/checkbox'
 
 /* istanbul ignore next */
 Checkbox.install = function (Vue) {

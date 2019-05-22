@@ -51,7 +51,7 @@ export default {
                 sex: {
                   type: 'string',
                   title: '性别',
-                  enums: ['1', '2']
+                  enum: ['1', '2']
                 }
               },
               required: ['name', 'phone']
@@ -111,11 +111,17 @@ export default {
       ],
       model: {
         name: '王昌彬',
+        hobby: ['足球', '乒乓球'],
         contacts: [
           {
             name: '王瑶',
             phone: '15268801392',
             sex: '2'
+          },
+          {
+            name: '王瑶1',
+            phone: '15268801391',
+            sex: '1'
           }
         ],
         birthday: '1989-05-14',

@@ -1,8 +1,8 @@
 import Vue from 'vue'
-import JForm from '../../../packages'
+import VueForm from '../../../packages'
 import App from './App'
 
-Vue.use(JForm)
+Vue.use(VueForm)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

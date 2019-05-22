@@ -1,6 +1,6 @@
 import { Form, Input, InputNumber, Switch, Select, Checkbox, Button, Row, Col, Icon, Popconfirm } from 'ant-design-vue'
-import Generator from '../../core/schema'
-import validator from '../../validate'
+import Generator from '../core/schema'
+import validator from '../validate'
 import JForm from './Form'
 
 /* istanbul ignore next */

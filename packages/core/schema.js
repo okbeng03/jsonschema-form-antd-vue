@@ -11,7 +11,6 @@ import fieldsetRule from './rules/fieldset'
 import numberRule from './rules/number'
 import selectRule from './rules/select'
 import textRule from './rules/text'
-import imageUploadRule from './rules/image-upload'
 
 const rulesMap = {
   switch: switchRule,
@@ -21,18 +20,18 @@ const rulesMap = {
   number: numberRule,
   date: dateRule,
   select: selectRule,
-  text: textRule,
-  image: imageUploadRule
+  text: textRule
 }
 
-// const BUILD_IN_TYPE = {
-//   'text': 'a-input',
-//   'select': 'a-select',
-//   'textarea': 'a-input',
-//   'html',
-//   'grid',
-//   'fieldset'
-// }
+const TYPE_MAP = {
+  'text': 'a-input',
+  'select': 'a-select',
+  'textarea': 'a-input',
+  'html': 'j-html',
+  'fieldset': 'j-fieldset',
+  'array': 'j-list',
+  'v-fieldset': 'j-fieldset'
+}
 
 class Generator {
   constructor () {
@@ -182,6 +181,10 @@ function combine (form, schemaForm, lookup) {
       def = lookup[path]
 
       if (def) {
+        if (TYPE_MAP[obj.type]) {
+          obj.type = TYPE_MAP[obj.type]
+        }
+
         // 当类型不相等，要处理，获取正确def
         if (def.type !== obj.type) {
           const rule = this.rules[obj.type]

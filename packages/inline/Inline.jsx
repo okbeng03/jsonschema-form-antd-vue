@@ -1,4 +1,4 @@
-import FormMixin from '../../mixins/form'
+import FormMixin from '../mixins'
 
 const List = {
   name: 'JInline',

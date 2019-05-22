@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import draggable from 'vuedraggable'
-import FormMixin from '../../mixins/form'
+import FormMixin from '../mixins'
 
 const List = {
   name: 'JList',
@@ -13,10 +13,8 @@ const List = {
     }
   },
   created () {
-    this.id = this.getDecoratorId(this.path)
-  },
-  mounted () {
-    const value = this.getFieldDefaultValue(this.id)
+    const id = this.id = this.getDecoratorId(this.path)
+    const value = this.getFieldDefaultValue(id)
 
     if (value && value.length) {
       const len = value.length

@@ -1,12 +1,13 @@
-import Form from './components/form'
-import Fieldset from './components/fieldset'
-import List from './components/array'
-import Inline from './components/inline'
-import Control from './components/control'
-import Checkbox from './components/checkbox'
-import Radio from './components/radio'
-import DateTimePicker from './components/datetime'
-import Html from './components/html'
+import Form from './form'
+import Fieldset from './fieldset'
+import List from './array'
+import Inline from './inline'
+import Control from './control'
+import Checkbox from './checkbox'
+import Radio from './radio'
+import DateTimePicker from './datetime'
+import Html from './html'
+import Mixins from './mixins'
 
 const components = [
   Form,
@@ -35,7 +36,8 @@ export {
   Checkbox,
   Radio,
   DateTimePicker,
-  Html
+  Html,
+  Mixins
 }
 
 export default {

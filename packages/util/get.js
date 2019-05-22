@@ -8,7 +8,7 @@ const getDefinition = function (path = '', definition) {
   path = _.toPath(path)
   const newPath = []
   path.forEach(key => {
-    if (/^\d$/.test(key)) {
+    if (/^\d+$/.test(key)) {
       newPath.push('0')
     } else {
       newPath.push(key)
@@ -35,20 +35,6 @@ const getDefinition = function (path = '', definition) {
   return def
 }
 
-// const getFields = function (path = '', fields) {
-//   if (!path) {
-//     return fields
-//   }
-
-//   return _.get(fields, path)
-// }
-
-// const getValue = function (path = '', model) {
-
-// }
-
 export {
   getDefinition
-  // getFields
-  // getValue
 }

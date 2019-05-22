@@ -1,6 +1,6 @@
 import { Radio } from 'ant-design-vue'
 import JRadio from './Radio'
-import RadioRule from '../../core/rules/radio'
+import RadioRule from '../core/rules/radio'
 
 /* istanbul ignore next */
 JRadio.install = function (Vue) {

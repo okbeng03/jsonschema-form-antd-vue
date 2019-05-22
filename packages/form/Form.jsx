@@ -1,7 +1,7 @@
 import _ from 'lodash'
 
-import localize from '../../validate/localize'
-import { parseErrors, removeEmptyValue } from '../../util/util'
+import localize from '../validate/localize'
+import { parseErrors, removeEmptyValue } from '../util/util'
 
 export default {
   name: 'VueForm',
@@ -15,6 +15,10 @@ export default {
     // form: Object,
     prefixCls: String,
     hideRequiredMark: Boolean,
+    hideAction: {
+      type: Boolean,
+      default: false
+    },
     hideReset: {
       type: Boolean,
       default: true
@@ -101,9 +105,7 @@ export default {
       e.preventDefault()
 
       this.form.validateFields((errors, values) => {
-        console.log(errors)
         if (!errors) {
-          console.log(values)
           this.$emit('submit', values)
         }
       })
@@ -136,7 +138,7 @@ export default {
     }
   },
   render (h) {
-    const { form, layout, prefixCls, hideRequiredMark, handleSubmit, hideReset, labelCol, wrapperCol } = this
+    const { form, layout, prefixCls, hideRequiredMark, handleSubmit, hideReset, hideAction, labelCol, wrapperCol } = this
     const resetBtn = hideReset ? null : (
       <a-popconfirm
         title="确认重置？"
@@ -145,10 +147,16 @@ export default {
         <a-button type="danger" style="margin-left: 16px;">重置</a-button>
       </a-popconfirm>
     )
-    const actionWrapperCol = {
+    const actionWrapperCol = layout !== 'vertical' ? {
       span: wrapperCol.span,
       offset: labelCol.span + labelCol.offset
-    }
+    } : {}
+    const action = hideAction ? null : (
+      <a-form-item wrapperCol={ actionWrapperCol }>
+        <a-button type="primary" html-type="submit">提交</a-button>
+        { resetBtn }
+      </a-form-item>
+    )
 
     return (
       <a-form
@@ -160,10 +168,7 @@ export default {
       >
         <j-fieldset>
         </j-fieldset>
-        <a-form-item wrapperCol={ actionWrapperCol }>
-          <a-button type="primary" html-type="submit">提交</a-button>
-          { resetBtn }
-        </a-form-item>
+        { action }
       </a-form>
     )
   }

@@ -1,5 +1,5 @@
 import moment from 'moment'
-import FormMixin from '../../mixins/form'
+import FormMixin from '../mixins'
 
 const DateTimePicker = {
   name: 'JDateTimePicker',
