@@ -10,8 +10,16 @@ export default function (def, schema, options) {
     if (parentType && parentType === 'array') {
       const size = _.size(schema.properties)
       const itemType = size > 6 ? 'j-fieldset' : 'j-inline'
+      let flag = true
 
-      def.type = itemType
+      _.each(schema.properties, (val, key) => {
+        if (val.type === 'object' || val.type === 'array') {
+          flag = false
+          return false
+        }
+      })
+
+      def.type = flag ? itemType : 'j-fieldset'
 
       if (itemType === 'j-inline') {
         options.col = Math.floor(24 / size)

@@ -1,9 +1,8 @@
 export default {
   boolean: ['switch'],
   object: ['fieldset'],
-  array: ['checkboxes', 'array'],
-  number: ['number'],
-  integer: ['number'],
-  string: ['date', 'select', 'text'],
-  addon: []
+  array: ['checkboxes', 'list'],
+  number: ['digit'],
+  integer: ['digit'],
+  string: ['date', 'select', 'text']
 }

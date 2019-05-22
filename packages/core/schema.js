@@ -16,21 +16,25 @@ const rulesMap = {
   switch: switchRule,
   fieldset: fieldsetRule,
   checkboxes: checkboxesRule,
-  array: arrayRule,
-  number: numberRule,
+  list: arrayRule,
+  digit: numberRule,
   date: dateRule,
   select: selectRule,
   text: textRule
 }
 
+const layoutComponents = ['list', 'fieldset']
+
 const TYPE_MAP = {
-  'text': 'a-input',
-  'select': 'a-select',
-  'textarea': 'a-input',
+  'text': 'text',
+  'select': 'select',
+  'textarea': 'text',
   'html': 'j-html',
   'fieldset': 'j-fieldset',
   'array': 'j-list',
-  'v-fieldset': 'j-fieldset'
+  'v-fieldset': 'j-fieldset',
+  'number': 'digit',
+  'integer': 'digit'
 }
 
 class Generator {
@@ -44,6 +48,10 @@ class Generator {
 
     _.each(rule, (list, type) => {
       rules[type] = list.map(item => {
+        if (_.indexOf(layoutComponents, item) === -1) {
+          rules[item] = [ rulesMap[item] ]
+        }
+
         return rulesMap[item]
       })
     })
@@ -163,7 +171,7 @@ function combine (form, schemaForm, lookup) {
     }
 
     if (obj.key && typeof obj.key === 'string') {
-      obj.key = obj.key.replace(/\[\]/g, '[0].')
+      obj.key = obj.key.replace(/\[\]/g, '[0]')
       obj.key = objectpath.parse(obj.key)
     }
 
@@ -186,19 +194,21 @@ function combine (form, schemaForm, lookup) {
         }
 
         // 当类型不相等，要处理，获取正确def
-        if (def.type !== obj.type) {
+        if (obj.type && def.type !== obj.type) {
           const rule = this.rules[obj.type]
 
           if (rule) {
-            def = {
+            const _def = {
               formItem: def.formItem,
               key: def.key,
               col: def.col,
               schema: def.schema
             }
 
-            rule[0].call(this, def, def.schema)
-            obj.type = def.type
+            rule[0].call(this, _def, _def.schema)
+            obj.type = _def.type
+            delete _def.schema
+            obj = extend(true, {}, _def, obj)
           }
         }
 
@@ -212,8 +222,6 @@ function combine (form, schemaForm, lookup) {
             obj.formItem.wrapperCol.span = obj.formItem.wrapperCol.span + obj.formItem.labelCol.span + obj.formItem.labelCol.offset
           }
         }
-
-        delete obj.schema
       } else {
         const rule = this.rules[obj.type]
 
@@ -235,9 +243,9 @@ function combine (form, schemaForm, lookup) {
 
     if (obj.items) {
       if (def) {
-        obj.items = combine(obj.items, def.items, lookup)
+        obj.items = combine.call(this, obj.items, def.items, lookup)
       } else {
-        obj.items = combine(obj.items, schemaForm, lookup)
+        obj.items = combine.call(this, obj.items, schemaForm, lookup)
       }
     }
 
@@ -287,6 +295,11 @@ function compatOldVersion (data) {
   if (def.tpl) {
     input.html = def.tpl
     delete def.tpl
+  }
+
+  if (def.items) {
+    obj.items = _.cloneDeep(def.items)
+    delete def.items
   }
 
   formItem = extend(true, {}, formItem, def.formItem)

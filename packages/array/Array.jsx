@@ -46,9 +46,9 @@ const List = {
   },
   methods: {
     renderHeader (h) {
-      const { columns } = this.definition
+      const { columns, items } = this.definition
 
-      if (columns) {
+      if (columns && items[0].type === 'j-inline') {
         const cols = columns.map(column => {
           const classes = classNames({
             'ant-form-item-required': column.required
