@@ -209,10 +209,12 @@ function combine (form, schemaForm, lookup) {
             obj.type = _def.type
             delete _def.schema
             obj = extend(true, {}, _def, obj)
+            delete def.decorator
+            obj = extend(true, {}, def, obj)
           }
+        } else {
+          obj = extend(true, {}, def, obj)
         }
-
-        obj = extend(true, {}, def, obj)
 
         // wrapper col span
         if (def.formItem.label !== obj.formItem.label && (def.formItem.label === '' || obj.formItem.label === '')) {

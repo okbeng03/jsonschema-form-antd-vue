@@ -7,7 +7,6 @@ export default function (def) {
           validator: this.handleFieldValidate
         }
       ]
-      // valuePropName: 'checked'
     }
   ]
 }

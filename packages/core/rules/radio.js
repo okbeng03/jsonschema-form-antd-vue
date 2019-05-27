@@ -16,7 +16,6 @@ export default function (def, schema) {
           validator: this.handleFieldValidate
         }
       ]
-      // valuePropName: 'checked'
     }
   ]
 }
