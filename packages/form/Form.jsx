@@ -81,7 +81,7 @@ export default {
     }
 
     if (layout !== 'vertical') {
-      formItemProps = {
+      this.formItemProps = formItemProps = {
         ...formItemProps,
         labelCol,
         wrapperCol,
@@ -92,6 +92,20 @@ export default {
     // form definition
     this.validate = this.$validator.compile(schema)
     this.formDefinition.definition = this.$generator.parse(schema, definition, formItemProps, this.handleFieldValidate.bind(this))
+
+    this.$watch('schema', (schema) => {
+      this.validate = this.$validator.compile(schema)
+      this.formDefinition.definition = this.$generator.parse(schema, this.definition, this.formItemProps, this.handleFieldValidate.bind(this))
+    }, {
+      deep: true
+    })
+
+    this.$watch('definition', (definition) => {
+      // this.validate = this.$validator.compile(this.schema)
+      this.formDefinition.definition = this.$generator.parse(this.schema, definition, this.formItemProps, this.handleFieldValidate.bind(this))
+    }, {
+      deep: true
+    })
   },
   mounted () {
     const { defaultValue } = this
