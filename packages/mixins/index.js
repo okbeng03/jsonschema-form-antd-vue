@@ -19,25 +19,18 @@ export default {
       return getDefinition(path, formDefinition.definition)
     }
   },
-  inject: {
-    form: {
-      default: () => ({})
-    },
-    formDefinition: {
-      from: 'formDefinition',
-      default: () => ({})
-    },
-    defaultValue: {
-      default: () => ({})
-    }
-  },
+  inject: [
+    'form',
+    'formDefinition',
+    'model'
+  ],
   methods: {
     getFieldDefaultValue (key) {
       if (!key) {
         return
       }
 
-      return _.get(this.defaultValue, key)
+      return _.get(this.model.value, key)
     },
     getPath (key) {
       if (!key) {

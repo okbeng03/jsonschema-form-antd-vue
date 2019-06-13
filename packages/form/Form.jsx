@@ -52,18 +52,15 @@ export default {
     schema: Object,
     definition: Array,
     defaultValue: [Object, Array]
-    // ajv: {
-    //   type: Object,
-    //   default: () => {
-    //     return validator()
-    //   }
-    // }
   },
   data () {
     return {
       form: this.$form.createForm(this),
       formDefinition: {
         definition: []
+      },
+      model: {
+        value: null
       }
     }
   },
@@ -71,7 +68,8 @@ export default {
     return {
       form: this.form,
       formDefinition: this.formDefinition,
-      defaultValue: this.defaultValue
+      defaultValue: this.defaultValue,
+      model: this.model
     }
   },
   created () {
@@ -103,6 +101,14 @@ export default {
     this.$watch('definition', (definition) => {
       // this.validate = this.$validator.compile(this.schema)
       this.formDefinition.definition = this.$generator.parse(this.schema, definition, this.formItemProps, this.handleFieldValidate.bind(this))
+    }, {
+      deep: true
+    })
+
+    this.model.value = this.defaultValue
+
+    this.$watch('defaultValue', (newValue) => {
+      this.model.value = newValue
     }, {
       deep: true
     })

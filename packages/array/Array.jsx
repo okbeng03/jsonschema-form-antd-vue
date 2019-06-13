@@ -1,4 +1,3 @@
-// import _ from 'lodash'
 import classNames from 'classnames'
 import draggable from 'vuedraggable'
 import FormMixin from '../mixins'
@@ -9,7 +8,7 @@ const List = {
   data () {
     return {
       id: '',
-      size: 1,
+      size: 0,
       list: []
     }
   },
@@ -28,6 +27,24 @@ const List = {
       this.size = len
       this.list = list
     }
+
+    this.$watch('model', (newValue) => {
+      const value = this.getFieldDefaultValue(id)
+
+      if (value && value.length) {
+        const len = value.length
+        const list = []
+
+        for (let i = 0; i < len; i++) {
+          list.push(i)
+        }
+
+        this.size = len
+        this.list = list
+      }
+    }, {
+      deep: true
+    })
   },
   render (h) {
     const { definition, list } = this

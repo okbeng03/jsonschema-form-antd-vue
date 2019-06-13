@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <vue-form :schema="schema" :definition="definition" :default-value="model" :hide-reset="false" @submit="onSubmit"></vue-form>
+    <vue-form ref="vueForm" :schema="schema" :definition="definition" :default-value="model" :hide-reset="false" @submit="onSubmit"></vue-form>
   </div>
 </template>
 
@@ -133,6 +133,34 @@ export default {
   methods: {
     onSubmit (data) {
       console.log('submit: ', data)
+      const model = {
+        name: '王昌彬',
+        hobby: ['足球', '乒乓球'],
+        contacts: [
+          {
+            name: '王瑶',
+            phone: '15268801392',
+            sex: '2'
+          },
+          {
+            name: '王瑶1',
+            phone: '15268801391',
+            sex: '1'
+          },
+          {
+            name: '王瑶2',
+            phone: '15268801391',
+            sex: '1'
+          }
+        ],
+        birthday: '1989-05-14',
+        agree: true,
+        job: 'Teacher'
+      }
+      this.model = model
+      this.$nextTick(() => {
+        this.$refs.vueForm.form.setFieldsValue(model)
+      })
     }
   }
 }
