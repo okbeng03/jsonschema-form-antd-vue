@@ -49,7 +49,7 @@ export default {
 
       const id = this.getPath(key).join('.')
 
-      return id.replace(/\.(\d+)\./g, '[$1].')
+      return id.replace(/\.(\d+)(\.)?/g, '[$1]$2')
     }
   }
 }

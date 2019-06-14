@@ -7,10 +7,6 @@ const getDefinition = function (path = '', definition) {
 
   path = _.toPath(path)
 
-  if (definition[0].type === 'j-list') {
-    definition = definition[0].items
-  }
-
   const newPath = []
   path.forEach(key => {
     if (/^\d+$/.test(key)) {
