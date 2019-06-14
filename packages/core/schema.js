@@ -103,12 +103,9 @@ class Generator {
         })
       })
     } else {
-      _.each(schema.items, (val, idx) => {
-        this._parse(idx, val, schemaForm, {
-          path: [idx],
-          lookup: options.lookup,
-          parentType: 'array'
-        })
+      this._parse('', schema, schemaForm, {
+        path: [],
+        lookup: options.lookup
       })
     }
 

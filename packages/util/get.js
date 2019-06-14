@@ -1,11 +1,16 @@
 import _ from 'lodash'
 
 const getDefinition = function (path = '', definition) {
-  if (!path) {
-    return definition
+  if (!path || _.isEmpty(path)) {
+    return definition[0]
   }
 
   path = _.toPath(path)
+
+  if (definition[0].type === 'j-list') {
+    definition = definition[0].items
+  }
+
   const newPath = []
   path.forEach(key => {
     if (/^\d+$/.test(key)) {

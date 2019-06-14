@@ -158,7 +158,7 @@ export default {
     }
   },
   render (h) {
-    const { form, layout, prefixCls, hideRequiredMark, handleSubmit, hideReset, hideAction, labelCol, wrapperCol } = this
+    const { form, layout, prefixCls, hideRequiredMark, handleSubmit, hideReset, hideAction, labelCol, wrapperCol, formDefinition } = this
     const resetBtn = hideReset ? null : (
       <a-popconfirm
         title="确认重置？"
@@ -186,8 +186,13 @@ export default {
         hideRequiredMark={ hideRequiredMark }
         onSubmit={ handleSubmit }
       >
-        <j-fieldset>
-        </j-fieldset>
+        {
+          formDefinition.definition[0].type === 'j-list' ? (
+            <j-list></j-list>
+          ) : (
+            <j-fieldset></j-fieldset>
+          )
+        }
         { action }
       </a-form>
     )
