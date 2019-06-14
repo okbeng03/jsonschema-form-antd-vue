@@ -1,8 +1,8 @@
 import _ from 'lodash'
 
 const getDefinition = function (path = '', definition) {
-  if (!path || _.isEmpty(path)) {
-    return definition[0]
+  if (!path) {
+    return definition
   }
 
   path = _.toPath(path)
