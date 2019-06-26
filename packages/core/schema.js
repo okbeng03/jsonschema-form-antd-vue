@@ -28,7 +28,7 @@ const layoutComponents = ['list', 'fieldset']
 const TYPE_MAP = {
   'text': 'text',
   'select': 'select',
-  'textarea': 'text',
+  'textarea': 'a-textarea',
   'html': 'j-html',
   'fieldset': 'j-fieldset',
   'array': 'j-list',
@@ -207,6 +207,8 @@ function combine (form, schemaForm, lookup) {
             delete _def.schema
             obj = extend(true, {}, _def, obj)
             delete def.decorator
+            obj = extend(true, {}, def, obj)
+          } else {
             obj = extend(true, {}, def, obj)
           }
         } else {
