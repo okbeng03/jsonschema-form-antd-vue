@@ -1,6 +1,6 @@
 {
   "name": "jsonschema-form-antd-vue",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "main": "lib/index.js",
   "module": "es/index.js",
   "scripts": {

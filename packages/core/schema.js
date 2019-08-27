@@ -81,10 +81,14 @@ class Generator {
    * @param {Object} schema
    * @param {Array} definition
    */
-  parse (schema, definition = [], formItemProps, handleFieldValidate) {
-    if (!schema || !(schema.properties || schema.items)) {
+  parse (_schema, _definition = [], _formItemProps, handleFieldValidate) {
+    if (!_schema || !(_schema.properties || _schema.items)) {
       throw new Error('schema no validate!')
     }
+
+    const schema = extend(true, {}, _schema)
+    let definition = extend(true, {}, _definition)
+    const formItemProps = extend(true, {}, _formItemProps)
 
     this.handleFieldValidate = handleFieldValidate
     this.formItemProps = formItemProps
