@@ -13,7 +13,9 @@ const DateTimePicker = {
   },
   computed: {
     format () {
-      return this.definition.input.format
+      const { type } = this
+
+      return this.definition.input.format || (type === 'time' ? 'HH:mm:ss' : 'YYYY-MM-DD HH:mm:ss')
     }
   },
   data () {
@@ -45,9 +47,10 @@ const DateTimePicker = {
     }
   },
   methods: {
-    onChange (time, timeString) {
-      const value = timeString || time.format(this.format)
-      this.$emit('change', value)
+    onChange (time) {
+      const { format } = this
+
+      this.$emit('change', time ? time.format(format) : '')
     }
   }
 }
