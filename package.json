@@ -57,7 +57,7 @@
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
     "glob": "^7.1.4",
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.2",
     "gulp-babel": "^7.0.0",
     "gulp-strip-code": "^0.1.4",
     "install": "^0.12.2",
