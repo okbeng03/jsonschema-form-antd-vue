@@ -34,7 +34,7 @@
     "@vue/babel-preset-jsx": "^1.0.0",
     "@vue/cli-plugin-babel": "^3.7.0",
     "@vue/cli-plugin-eslint": "^3.7.0",
-    "@vue/cli-service": "^3.7.0",
+    "@vue/cli-service": "^5.0.8",
     "@vue/eslint-config-standard": "^4.0.0",
     "autoprefixer": "^9.5.1",
     "babel-core": "^6.26.3",
